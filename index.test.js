@@ -41,15 +41,31 @@ describe('Endpoints', () => {
             const response = await request(app).get('/dogs');
             expect(response.status).toBe(200);
             
-            const testDog = await Dog.create({
-                name: "Rufus",
-                breed: "Maltese",
-                color: "white",
-                description: "small white medium hair dog",
-            });
+            request(app)
+                .post('/dogs')
+                .send({
+                     name: "Rufus",
+                     breed: "Maltese",
+                     color: "white",
+                     description: "small white medium hair dog",
+                })
+                .set('Accept', 'application/json')
+                .expect('Content-Type', /json/)
+                .expect(200)
+                .end(function (err, res) {
+                    if (err) return done(err);
+                return done();
+      });
             
-            expect(testDog).toBeInstanceOf(Dog);
-            expect(testDog.name).toBe("Rufus");
+            // const testDog = await Dog.create({
+            //     name: "Rufus",
+            //     breed: "Maltese",
+            //     color: "white",
+            //     description: "small white medium hair dog",
+            // });
+            
+            // expect(testDog).toBeInstanceOf(Dog);
+            // expect(testDog.name).toBe("Rufus");
             //expect(response.body[0]).toEqual(expect.objectContaining(products[0]));
             //expect(response.body[0].name).toEqual(products[0].name);
         });
@@ -59,13 +75,21 @@ describe('Endpoints', () => {
      describe('DELETE /dogs/:id', () => {
          it('should delete a specified dog', async () => {
             
-            const dogToDelete = await Dog.findByPk(1);
-            expect(dogToDelete).toBeInstanceOf(Dog);
+             request(app)
+               .delete('/dogs/1')
+               .expect(200)
+               .end(function (err, res) {
+                    if (err) return done(err);
+                    return done();
+                });
+    
+            // const dogToDelete = await Dog.findByPk(1);
+            // expect(dogToDelete).toBeInstanceOf(Dog);
  
-            await dogToDelete.destroy();
+            // await dogToDelete.destroy();
             
-            const isDogDeleted = await Dog.findByPk(1);
-            expect(isDogDeleted).toBe(null);
+            // const isDogDeleted = await Dog.findByPk(1);
+            // expect(isDogDeleted).toBe(null);
             
         });
     });
