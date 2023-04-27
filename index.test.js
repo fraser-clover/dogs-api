@@ -33,4 +33,40 @@ describe('Endpoints', () => {
             expect(response.body[0]).toEqual(expect.objectContaining(dogs[0]));
         });
     });
+
+    TODO:
+    describe('POST /dogs', () => {
+        it('should add a new dog with correct data', async () => {
+
+            const response = await request(app).get('/dogs');
+            expect(response.status).toBe(200);
+            
+            const testDog = await Dog.create({
+                name: "Rufus",
+                breed: "Maltese",
+                color: "white",
+                description: "small white medium hair dog",
+            });
+            
+            expect(testDog).toBeInstanceOf(Dog);
+            expect(testDog.name).toBe("Rufus");
+            //expect(response.body[0]).toEqual(expect.objectContaining(products[0]));
+            //expect(response.body[0].name).toEqual(products[0].name);
+        });
+    });
+
+    TODO: 
+     describe('DELETE /dogs/:id', () => {
+         it('should delete a specified dog', async () => {
+            
+            const dogToDelete = await Dog.findByPk(1);
+            expect(dogToDelete).toBeInstanceOf(Dog);
+ 
+            await dogToDelete.destroy();
+            
+            const isDogDeleted = await Dog.findByPk(1);
+            expect(isDogDeleted).toBe(null);
+            
+        });
+    });
 });
